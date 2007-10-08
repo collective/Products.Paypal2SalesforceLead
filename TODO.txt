@@ -1,0 +1,10 @@
+TODO for Paypal2SalesforceLead
+
+Short term
+
+[ ] format the list of variables in the error e-mail more nicely
+[ ] add a configlet for TTP setup
+
+Long term
+[ ] Use Salesforce API to check for duplicate transaction IDs.
+[ ] Support multiple currencies

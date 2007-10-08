@@ -1,0 +1,14 @@
+<object name="portal_properties" meta_type="Plone Properties Tool">
+ <object name="paypal2lead_properties" meta_type="Plone Property Sheet">
+  <property name="title">Paypal2SalesforceLead properties</property>
+  <property name="use_paypal_sandbox" type="boolean">True</property>
+  <property name="valid_recipients" type="lines" />
+  <property name="allow_query_string_override" type="boolean">False</property>
+  <property name="salesforce_oid" type="string" />
+  <property name="payment_date_field" type="string" />
+  <property name="payment_amount_field" type="string" />
+  <property name="transaction_id_field" type="string" />
+  <property name="lead_source" type="string">Paypal</property>
+  <property name="campaign_id" type="string" />
+ </object>
+</object>
