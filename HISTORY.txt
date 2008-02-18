@@ -2,6 +2,14 @@ Changelog for Paypal2SalesforceLead
 
     (name of developer listed in brackets)
 
+Paypal2SalesforceLead npowerseattle branch
+
+    The new Feature is the "I want to donate to" option group.  When the user selects 
+    something there, the value ends up in the Paypal Donation Type box in Salesforce.  
+    This will allow orgs to have people pay for different things or designate their  
+    money for a specific fund. [evanc]
+
 Paypal2SalesforceLead 1.0
 
     - Refactored into Zope 3 form and cut a release [dglick]
+    - Minor update to allow item name field [evanc]

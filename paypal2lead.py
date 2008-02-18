@@ -13,20 +13,20 @@ class Paypal2SalesforceLead(object):
     """Implements IPaypal2SalesforceLead
     """
     implements(IPaypal2SalesforceLead)
-    
+
     def __init__(self, use_sandbox = True):
         """
         """
         self.paypal_ipn = PaypalIPN(use_sandbox)
         self.web2lead = SalesforceWeb2Lead()
-    
-    def create(self, paypal_params, oid, payment_date_field, payment_amount_field, transaction_id_field, lead_source = 'Paypal', campaign_id = None):
+
+    def create(self, paypal_params, oid, payment_date_field, payment_amount_field, lead_source = 'Paypal', transaction_id_field = None, item_name_field = None, campaign_id = None):
         """
         """
-        
+
         if not self.paypal_ipn.verify(paypal_params):
             raise InvalidPaymentException
-        
+
         # required parameters
         s_params = {
             'oid':                  oid,
@@ -37,10 +37,16 @@ class Paypal2SalesforceLead(object):
             'lead_source':          lead_source,
             payment_date_field:     strftime('%m/%d/%Y', strptime(paypal_params['payment_date'], '%H:%M:%S %b %d, %Y %Z')),
             payment_amount_field:   paypal_params['mc_gross'],
-            transaction_id_field:   paypal_params['txn_id'],
         }
 
-        # parameters that paypal *might* pass us
+		# optional parameters with field names
+        if transaction_id_field:
+            s_params[transaction_id_field] = paypal_params['txn_id']
+
+        if item_name_field:
+            s_params[item_name_field] = paypal_params['item_name']
+
+        # standard parameters that paypal *might* pass us
         key_mapping = {
             'address_city': 'city',
             'address_state': 'state',
@@ -53,7 +59,7 @@ class Paypal2SalesforceLead(object):
         for paypal_key, salesforce_key in key_mapping.items():
             if paypal_params.has_key(paypal_key):
                 s_params[salesforce_key] = paypal_params[paypal_key]
-                
+
         if campaign_id:
             s_params['Campaign_ID'] = campaign_id
 
