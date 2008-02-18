@@ -1,0 +1,32 @@
+from zope.interface import implements
+from Products.Paypal2SalesforceLead.interfaces import IPaypalIPN
+
+import urllib
+import zLOG
+
+from Products.Paypal2SalesforceLead.config import PAYPAL_VERIFIER, PAYPAL_VERIFIER_SANDBOX
+
+class PaypalIPN(object):
+    """Implements IPaypalIPN
+    """
+    implements(IPaypalIPN)
+    
+    def __init__(self, use_sandbox = True):
+        self.urllib = urllib
+        self.use_sandbox = use_sandbox
+
+    def verify(self, paypal_params):
+        paypal_params['cmd'] = '_notify-validate'
+
+        # send paypal's variables back to verify this payment
+        verifier_url = self.use_sandbox and PAYPAL_VERIFIER_SANDBOX or PAYPAL_VERIFIER
+        response = self.urllib.urlopen(verifier_url, urllib.urlencode(paypal_params)).read()
+        if response != 'VERIFIED':
+            zLOG.LOG('Paypal2SalesforceLead', 1, 'Payment not verified', 'Response from Paypal was "%s"' % (response))
+            return False
+        
+        # only insert Leads for completed payments
+        if not paypal_params.has_key('payment_status') or paypal_params['payment_status'] != 'Completed':
+            return False
+            
+        return True

@@ -1,0 +1,25 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:five="http://namespaces.zope.org/five"
+           xmlns:i18n="http://namespaces.zope.org/i18n"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:gs="http://namespaces.zope.org/genericsetup"
+           i18n_domain="Paypal2SalesforceLead">
+
+   <browser:page
+       for="*"
+       class=".browser.Paypal2LeadView"
+       name="paypal2lead"
+       allowed_interface=".interfaces.IPaypal2LeadView"
+       permission="zope.Public"
+       />
+       
+   <gs:registerProfile
+       name="default"
+       title="Paypal2SalesforceLead Profile"
+       directory="profiles/default"
+       description="Incomplete. Do not use for product installation."
+       provides="Products.GenericSetup.interfaces.EXTENSION"
+       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+   />
+
+</configure>

@@ -1,0 +1,7 @@
+Changelog for Paypal2SalesforceLead
+
+    (name of developer listed in brackets)
+
+Paypal2SalesforceLead 1.0
+
+    - Refactored into Zope 3 form and cut a release [dglick]
