@@ -25,7 +25,6 @@ class TestPaypal2Lead(TestCase):
             'payer_email': 'test@example.com',
             'payment_date': '12:00:00 Sep 27, 2007 PDT',
             'mc_gross': '2.00',
-            'txn_id': 'asdf'
         }
         
         # should raise exception if IPN verification fails

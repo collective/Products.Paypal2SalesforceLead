@@ -31,6 +31,7 @@ class TestPaypal2LeadView(PloneTestCase.PloneTestCase):
         props.payment_date_field = 1
         props.payment_amount_field = 1
         props.transaction_id_field = 1
+        props.item_name_field = 1
 
     def testEmailOnFailure(self):
         # make sure that payment recipient will get an e-mail if the web-to-lead

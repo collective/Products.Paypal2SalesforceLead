@@ -35,8 +35,6 @@ class Paypal2SalesforceLead(object):
             'email':                paypal_params['payer_email'],
             'company':              (paypal_params.has_key('payer_business_name') and paypal_params['payer_business_name'] or '[not provided]'),
             'lead_source':          lead_source,
-            payment_date_field:     strftime('%m/%d/%Y', strptime(paypal_params['payment_date'], '%H:%M:%S %b %d, %Y %Z')),
-            payment_amount_field:   paypal_params['mc_gross'],
         }
 
 		# optional parameters with field names
@@ -45,6 +43,12 @@ class Paypal2SalesforceLead(object):
 
         if item_name_field:
             s_params[item_name_field] = paypal_params['item_name']
+
+        if payment_date_field:
+            s_params[payment_date_field] = strftime('%m/%d/%Y', strptime(paypal_params['payment_date'], '%H:%M:%S %b %d, %Y %Z'))
+            
+        if payment_amount_field:
+            s_params[payment_amount_field] = paypal_params['mc_gross']
 
         # standard parameters that paypal *might* pass us
         key_mapping = {
