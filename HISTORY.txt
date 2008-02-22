@@ -2,6 +2,10 @@ Changelog for Paypal2SalesforceLead
 
     (name of developer listed in brackets)
 
-Paypal2SalesforceLead 1.0
 
-    - Refactored into Zope 3 form and cut a release [dglick]
+Paypal2SalesforceLead 1.0 beta 1 [2008.02.22]
+
+    - Fixed quickinstaller-GenericSetup machinery so it works in Plone 3.0.5+ [davisagli]
+    - Fixed handling of optional parameters [davisagli]
+    - Always use Paypal sandbox if paypal request is marked as a test [jessesnyder]
+    - Minor update to allow item name field [evanc]

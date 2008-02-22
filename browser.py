@@ -39,17 +39,20 @@ class Paypal2LeadView(Five.BrowserView):
         # collect the Salesforce parameters from the property sheet,
         # or from the query string if they were passed and query string overrides are allowed
         settings = {}
-        for var in ('salesforce_oid', 'payment_date_field', 'payment_amount_field', 'transaction_id_field', 'lead_source', 'campaign_id'):
-            settings[var] = getattr(props, var)
-            if props.allow_query_string_override and query_params.has_key(var):
-                settings[var] = query_params[var][0]
-            if not settings[var] and var != 'campaign_id':
-                raise ValueError, "You must specify a value for '%s'" % (var)
-        
+        for var in ('salesforce_oid', 'payment_date_field', 'payment_amount_field', 'transaction_id_field', 'item_name_field', 'lead_source', 'campaign_id'):
+            try:
+                settings[var] = getattr(props, var)
+                if props.allow_query_string_override and query_params.has_key(var):
+                    settings[var] = query_params[var][0]
+            except AttributeError:
+                if var not in ['campaign_id', 'transaction_id_field', 'item_name_field']:
+                    raise ValueError, "You must specify a value for '%s'" % (var)
+                settings[var] = None
+
         res = self.pp2sf.create(paypal_params, settings['salesforce_oid'], settings['payment_date_field'],
-            settings['payment_amount_field'], settings['transaction_id_field'], settings['lead_source'],
-            settings['campaign_id'])
-        
+            settings['payment_amount_field'], settings['lead_source'], settings['transaction_id_field'],
+            settings['item_name_field'], settings['campaign_id'])
+
         # send an e-mail to the payment recipient if the web-to-lead creation failed
         if not res:
             subj = 'Error creating Salesforce lead from Paypal transaction'
@@ -65,8 +68,8 @@ Salesforce configuration:
 Paypal variables:
 %s
 """ % (settings, paypal_params)
-            
+
             mailhost = self.context.MailHost
             mailhost.send(msg, to_addr, from_addr, subj)
-            
+
         return True

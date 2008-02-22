@@ -30,14 +30,13 @@ class TestPaypal2LeadView(PloneTestCase.PloneTestCase):
         props.salesforce_oid = 1
         props.payment_date_field = 1
         props.payment_amount_field = 1
-        props.transaction_id_field = 1
 
     def testEmailOnFailure(self):
         # make sure that payment recipient will get an e-mail if the web-to-lead
         # creation fails
         self.view.pp2sf = Mock( {'create': False} )
         self.view.request.form['receiver_email'] = 'me@example.com'
-        self.view.request['QUERY_STRING'] = 'salesforce_oid=1&payment_date_field=1&payment_amount_field=1&transaction_id_field=1'
+        self.view.request['QUERY_STRING'] = 'salesforce_oid=1&payment_date_field=1&payment_amount_field=1'
         self.view()
         self.assertEqual(self.mailhost.n_mails, 1)
         self.assertEqual(self.mailhost.mto, 'me@example.com')
@@ -54,7 +53,7 @@ class TestPaypal2LeadView(PloneTestCase.PloneTestCase):
         
         # make sure that we only handle payments to specified recipients (to prevent DOSing)
         self.view.request.form['receiver_email'] = 'invalid@example.com'
-        self.view.request['QUERY_STRING'] = 'salesforce_oid=1&payment_date_field=1&payment_amount_field=1&transaction_id_field=1'
+        self.view.request['QUERY_STRING'] = 'salesforce_oid=1&payment_date_field=1&payment_amount_field=1'
         self.assertRaises(InvalidRecipientException, self.view)
         
         # make sure that valid payments go through
@@ -72,7 +71,6 @@ class TestPaypal2LeadView(PloneTestCase.PloneTestCase):
         self.view.request['QUERY_STRING'] = 'salesforce_oid=1'
         self.failUnless(self.view())
         
-
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

@@ -65,17 +65,19 @@ Configuration
 	The following settings can be set on the property sheet, or in the query string of the URL
 	entered into Paypal (if allow_query_string_override is enabled):
 	        
-	    * salesforce_oid: ID of the Salesforce instance that will be used.
-    	* payment_date_field: ID of the custom payment date field on the Lead
-    	* payment_amount_field: ID of the custom payment amount field on the Lead
-    	* transaction_id_field: ID of the custom transaction ID field on the Lead
-		* lead_source: a value to be entered for the lead_source field (optional)
-		* campaign_id: a value to be entered for the Campaign_ID field (optional; no default)
+        * salesforce_oid: ID of the Salesforce instance that will be used.
+        * payment_date_field: ID of the custom payment date field on the Lead
+        * payment_amount_field: ID of the custom payment amount field on the Lead
+        * transaction_id_field: ID of the custom transaction ID field on the Lead
+        * item_name_field: ID of the custom item name field on the Lead (optional)
+        * lead_source: a value to be entered for the lead_source field (optional)
+        * campaign_id: a value to be entered for the Campaign_ID field (optional; no default)
 
 Salesforce.com Configuration
 
 	Paypal2SalesforceLead requires fields on the Lead object in Salesforce to hold the
-	following data: payment amount, payment date, and transaction ID.  Create these fields.
+	following data: payment amount, payment date, and transaction ID.  Create these fields.  You may
+	also add a custom field for the item name associated with the payment, if you want.
 	
 	A web-to-lead form must be enabled.  To do this, click on Setup at the top of the screen in
 	Salesforce.  Click on Customize under App Setup on the left sidebar, then Leads, then
@@ -100,17 +102,35 @@ Paypal Configuration
 	(Another option is to add a hidden field called 'notify_url' to the form that submits
 	to Paypal.  This allows the notification URL to be configured on a per-form basis.)
 	
-	The listener should be called as paypal2lead in the context of the Plone site in which it is
-	installed.  The full URL will look something like this:
+	For the notification url, specify the full path of paypal2lead in the context of the plone 
+	site. The full URL will look something like this:
 	    http://example.com/plone_site/paypal2lead
-	
+	    
+	Optionally, the notification url can include overrides for any and all property sheet settings
+	(if allow_query_string_override is enbabled). For example:
+        http://example.com/plone_site/paypal2lead?salesforce_oid=00D70000000IxQh&amp;  
+        payment_date_field=00N70000001y10c&amp;
+        payment_amount_field=00N70000001y101&amp;
+        transaction_id_field=00N70000001ywcd&amp;
+        item_name_field=00N70000001ywcn
+	   
 	You should now be able to make a test payment to your Paypal account, and see a new lead
 	appear in Salesforce as a result!
 
 	Remember to turn off the use_paypal_sandbox setting on the paypal2lead property sheet
 	when you are done testing!  Otherwise all your attempted IPN verifications will fail.
+	However, even after you turn off use_paypal_sandbox in your plone property sheet,
+	paypal2lead will still use the Paypal sandbox for notifications on any transaction
+	that Paypal indicates are a test (via the 'test_ipn' variable).
+	
 
 
 Written by
 
     * David Glick (davidglick@onenw.org)
+    
+Thanks to
+
+    * Steve Andersen
+    * Evan Callahan
+    * Jesse Snyder

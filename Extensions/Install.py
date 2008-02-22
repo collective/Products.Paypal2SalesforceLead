@@ -1,5 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 from StringIO import StringIO
+from Products.Paypal2SalesforceLead import HAS_PLONE25, HAS_PLONE30
 
 def install(self):
     out = StringIO()
@@ -8,10 +9,15 @@ def install(self):
     # so that our product works w/ the Quick Installer in Plone 2.5.x
     print >> out, "Installing Paypal2SalesforceLead"
     setup_tool = getToolByName(self, 'portal_setup')
-    old_context = setup_tool.getImportContextID()
-    setup_tool.setImportContext('profile-Products.Paypal2SalesforceLead:default')
-    setup_tool.runAllImportSteps()
-    setup_tool.setImportContext(old_context)
+    if HAS_PLONE30:
+        setup_tool.runAllImportStepsFromProfile(
+            'profile-Products.Paypal2SalesforceLead:default',
+            purge_old=False)
+    else:
+        old_context = setup_tool.getImportContextID()
+        setup_tool.setImportContext('profile-Products.Paypal2SalesforceLead:default')
+        setup_tool.runAllImportSteps()
+        setup_tool.setImportContext(old_context)
     print >> out, "Successfully installed Paypal2SalesforceLead."
     return out.getvalue()
 

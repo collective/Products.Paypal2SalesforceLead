@@ -32,8 +32,8 @@ class IPaypal2SalesforceLead(Interface):
     """Interface for converting Paypal IPN payment information into corresponding
     Salesforce.com Lead fields
     """
-    
-    def create(paypal_params, oid, payment_date_field, payment_amount_field, transaction_id_field, lead_source = 'Paypal', campaign_id = None):
+
+    def create(paypal_params, oid, payment_date_field, payment_amount_field, lead_source = 'Paypal', transaction_id_field = None, item_name_field = None, campaign_id = None):
         """Creates a new Lead in Salesforce upon successful Paypal IPN verification.
         Returns a boolean indicating whether the creation was successful.
         Raises an InvalidPaymentException if payment verification fails.
