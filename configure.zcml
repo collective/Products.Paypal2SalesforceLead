@@ -15,9 +15,10 @@
        
    <gs:registerProfile
        name="default"
-       title="Paypal2SalesforceLead Profile"
+       title="Paypal2SalesforceLead"
        directory="profiles/default"
-       description="Incomplete. Do not use for product installation."
+       description="Paypal2SalesforceLead sets up a listener for PayPal's IPN, 
+                    and adds a new Lead to a Salesforce.com account"
        provides="Products.GenericSetup.interfaces.EXTENSION"
        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
    />
