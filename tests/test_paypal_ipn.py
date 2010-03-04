@@ -27,9 +27,22 @@ class TestPaypalIPN(TestCase):
         res = self.paypal_ipn.verify({})
         self.failIf(res)
         
-        # should succeed if IPN verification succeeds and payment_status is 'Completed'
-        res = self.paypal_ipn.verify({'payment_status': 'Completed'})
-        self.failUnless(res)
+        # should succeed if IPN verification succeeds, regardless of payment_status
+        possible_status_vals = ('Canceled_Reversal',
+                                'Completed',
+                                'Created',
+                                'Denied',
+                                'Expired',
+                                'Failed',
+                                'Pending',
+                                'Processed',
+                                'Reversed',
+                                'Refunded',
+                                'Voided')
+        for stat in possible_status_vals:
+            res = self.paypal_ipn.verify({'payment_status': stat})
+            self.failUnless(res, "verify() failed for status %s" % stat)
+    
 
 def test_suite():
     from unittest import TestSuite, makeSuite

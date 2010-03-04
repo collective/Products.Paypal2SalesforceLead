@@ -2,6 +2,14 @@ Changelog for Paypal2SalesforceLead
 
     (name of developer listed in brackets)
 
+Paypal2SalesforceLead 1.0 beta 2 [2010.03.04]
+
+    - No longer throws an error on ipn verification for a payment_status other 
+      than 'Completed', since returning http status codes other than 200 can
+      result in Paypal disabling IPN notfications altogether. One implication
+      of this change is that refunds now also create Leads, but with a
+      negative payment value.
+      [jessesnyder]
 
 Paypal2SalesforceLead 1.0 beta 1 [2008.02.22]
 
