@@ -31,7 +31,7 @@ class PaypalIPN(object):
             return False
         
         # only insert Leads for completed payments
-        if not paypal_params.has_key('payment_status') or paypal_params['payment_status'] != 'Completed':
+        if not paypal_params.has_key('payment_status'):
             return False
             
         return True
