@@ -1,5 +1,3 @@
-import os, sys
-
 from unittest import TestCase
 from zope.interface.verify import verifyClass
 

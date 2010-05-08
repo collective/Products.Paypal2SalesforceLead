@@ -1,5 +1,3 @@
-import os, sys
-
 from Testing import ZopeTestCase
 from Products.PloneTestCase import PloneTestCase
 

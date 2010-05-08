@@ -6,7 +6,6 @@ from Testing import ZopeTestCase
 from Products.PloneTestCase import PloneTestCase
 from mock import Mock, expectException
 
-from Products.Paypal2SalesforceLead.browser import Paypal2LeadView, InvalidRecipientException
 from Products.Paypal2SalesforceLead.paypal2lead import InvalidPaymentException
 from Products.Paypal2SalesforceLead.tests import base
 
@@ -45,7 +44,9 @@ class TestPaypal2LeadView(PloneTestCase.PloneTestCase):
         # make sure that no e-mail is sent if the paypal verification was invalid
         self.view.pp2sf = Mock()
         self.view.pp2sf.mockSetExpectation('create', expectException(InvalidPaymentException))
-        self.assertRaises(InvalidPaymentException, self.view)
+        # should quietly return and empty string on failure to prevent
+        # disablint IPN responses
+        self.assertEqual(None, self.view())        
         self.assertEqual(self.mailhost.n_mails, 1)
 
     def testRejectInvalidRecipientEmail(self):
@@ -54,8 +55,9 @@ class TestPaypal2LeadView(PloneTestCase.PloneTestCase):
         # make sure that we only handle payments to specified recipients (to prevent DOSing)
         self.view.request.form['receiver_email'] = 'invalid@example.com'
         self.view.request['QUERY_STRING'] = 'salesforce_oid=1&payment_date_field=1&payment_amount_field=1'
-        self.assertRaises(InvalidRecipientException, self.view)
-        
+        # should quietly return and empty string on failure to prevent
+        # disablint IPN responses
+        self.assertEqual(None, self.view())
         # make sure that valid payments go through
         self.view.request.form['receiver_email'] = 'me@example.com'
         self.failUnless(self.view())

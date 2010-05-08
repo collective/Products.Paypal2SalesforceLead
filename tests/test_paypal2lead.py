@@ -1,12 +1,9 @@
-import os, sys
-
 from unittest import TestCase
 from zope.interface.verify import verifyClass
 from mock import Mock
 
 from Products.Paypal2SalesforceLead.interfaces import IPaypal2SalesforceLead
 from Products.Paypal2SalesforceLead.paypal2lead import Paypal2SalesforceLead, InvalidPaymentException
-from Products.Paypal2SalesforceLead.tests import base
 
 class TestPaypal2Lead(TestCase):
 

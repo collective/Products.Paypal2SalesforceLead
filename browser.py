@@ -1,12 +1,16 @@
+from cgi import parse_qs
+import urllib
+import logging
+
 from zope.interface import implements
 from Products import Five
-
 from Products.CMFCore.utils import getToolByName
 
 from Products.Paypal2SalesforceLead.interfaces import IPaypal2LeadView
+from Products.Paypal2SalesforceLead.paypal2lead import InvalidPaymentException
 from Products.Paypal2SalesforceLead.paypal2lead import Paypal2SalesforceLead
 
-from cgi import parse_qs
+logger = logging.getLogger("Paypal2SalesforceLead")
 
 class InvalidRecipientException(Exception):
     pass
@@ -33,8 +37,10 @@ class Paypal2LeadView(Five.BrowserView):
         
         # fail if recipient_email not in allowed list
         props = self.props
-        if paypal_params['receiver_email'] not in props.valid_recipients:
-            raise InvalidRecipientException
+        receiver_email = urllib.unquote(paypal_params['receiver_email'])
+        if receiver_email not in props.valid_recipients:
+            logger.error("%s not in valid recipients list" % receiver_email)
+            return
             
         # collect the Salesforce parameters from the property sheet,
         # or from the query string if they were passed and query string overrides are allowed
@@ -46,15 +52,24 @@ class Paypal2LeadView(Five.BrowserView):
                     settings[var] = query_params[var][0]
             except AttributeError:
                 if var not in ['campaign_id', 'transaction_id_field', 'item_name_field']:
-                    raise ValueError, "You must specify a value for '%s'" % (var)
+                    logger.error("You must specify a value for '%s'" % var)
+                    return
                 settings[var] = None
-
-        res = self.pp2sf.create(paypal_params, settings['salesforce_oid'], settings['payment_date_field'],
-            settings['payment_amount_field'], settings['lead_source'], settings['transaction_id_field'],
-            settings['item_name_field'], settings['campaign_id'])
+        try:
+            res = self.pp2sf.create(paypal_params, 
+                                    settings['salesforce_oid'],
+                                    settings['payment_date_field'],
+                                    settings['payment_amount_field'], 
+                                    settings['lead_source'], 
+                                    settings['transaction_id_field'],
+                                    settings['item_name_field'], 
+                                    settings['campaign_id'])
+        except InvalidPaymentException, e:
+            logger.error("Payment failed verification: %s" % e)
+            return
 
         # send an e-mail to the payment recipient if the web-to-lead creation failed
-        if not res:
+        if res is None or not res:
             subj = 'Error creating Salesforce lead from Paypal transaction'
             from_addr = self.context.email_from_address
             to_addr = paypal_params['receiver_email']
