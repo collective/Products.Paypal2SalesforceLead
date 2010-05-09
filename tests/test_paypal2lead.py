@@ -33,7 +33,7 @@ class TestPaypal2Lead(TestCase):
         for k in paypal_params.keys():
             params2 = paypal_params.copy()
             del(params2[k])    
-            self.assertRaises(KeyError, self.paypal2lead.create, params2, 1, 1, 1)
+            self.assertRaises(InvalidPaymentException, self.paypal2lead.create, params2, 1, 1, 1)
 
         # given valid input and IPN verification, should return same as SalesforceWeb2Lead object
         res = self.paypal2lead.create(paypal_params, 1, 1, 1)
