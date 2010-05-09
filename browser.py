@@ -65,7 +65,7 @@ class Paypal2LeadView(Five.BrowserView):
                                     settings['item_name_field'], 
                                     settings['campaign_id'])
         except InvalidPaymentException, e:
-            logger.error("Payment failed verification: %s" % e)
+            logger.error("%s" % e)
             return
 
         # send an e-mail to the payment recipient if the web-to-lead creation failed
