@@ -2,6 +2,13 @@ Changelog for Paypal2SalesforceLead
 
     (name of developer listed in brackets)
 
+Paypal2SalesforceLead 1.0 beta 3 [2011.02.10]
+
+    - In general aim to catch exceptions, log errors, and return a 200 status
+      code rather than returning 500 errors, in order to prevent disabling IPN 
+      notifications.
+      [jessesnyder]
+      
 Paypal2SalesforceLead 1.0 beta 2 [2010.03.04]
 
     - No longer throws an error on ipn verification for a payment_status other 
