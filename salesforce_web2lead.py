@@ -22,5 +22,5 @@ class SalesforceWeb2Lead(object):
             
         params['retURL'] = 'http://www.salesforce.com'
         res = self.urllib.urlopen(SALESFORCE_WEBTOLEAD, urllib.urlencode(params)).read()
-        success = (res.find("window.location.replace('http://www.salesforce.com');") > -1)
+        success = (res.find("window.location.replace(url + escapedHash);") > -1)
         return success
