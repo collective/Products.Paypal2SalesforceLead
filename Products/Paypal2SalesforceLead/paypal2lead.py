@@ -47,7 +47,9 @@ class Paypal2SalesforceLead(object):
                 s_params[item_name_field] = paypal_params['item_name']
 
             if payment_date_field:
-                s_params[payment_date_field] = strftime('%m/%d/%Y', strptime(paypal_params['payment_date'], '%H:%M:%S %b %d, %Y %Z'))
+                # date format sent by PayPal does not actualy match what is 
+                # specified here: https://developer.paypal.com/docs/classic/ipn/integration-guide/IPNandPDTVariables/
+                s_params[payment_date_field] = strftime('%m/%d/%Y', strptime(paypal_params['payment_date'], '%H:%M:%S %d %b %Y %Z'))
             
             if payment_amount_field:
                 s_params[payment_amount_field] = paypal_params['mc_gross']
