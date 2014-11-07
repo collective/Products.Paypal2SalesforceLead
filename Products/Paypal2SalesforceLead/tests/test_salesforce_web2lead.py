@@ -1,11 +1,22 @@
-import os, sys
-
 from unittest import TestCase
 from zope.interface.verify import verifyClass
 
 from Products.Paypal2SalesforceLead.interfaces import ISalesforceWeb2Lead
 from Products.Paypal2SalesforceLead.salesforce_web2lead import SalesforceWeb2Lead
 from Products.Paypal2SalesforceLead.tests import base
+
+
+class SalesforceResponseMock(object):
+
+    def __init__(self, header_dict):
+        self.header = header_dict
+
+    def info(self):
+        return self.header
+
+    def urlopen(self, url, params):
+        return self
+
 
 class TestSalesforceWeb2Lead(TestCase):
 
@@ -21,7 +32,7 @@ class TestSalesforceWeb2Lead(TestCase):
             'oid':          'asdf',
             'last_name':    'asdf'
         }
-        self.w2l.urllib = base.UrllibMock("window.location.replace('http://www.salesforce.com');")
+        self.w2l.urllib = SalesforceResponseMock({})
         
         # should return true upon successful creation
         res = self.w2l.create(params)
@@ -35,10 +46,13 @@ class TestSalesforceWeb2Lead(TestCase):
             self.failIf(res)
             
         # should return false if web-to-lead creation fails
-        self.w2l.urllib = base.UrllibMock('')
+        self.w2l.urllib = SalesforceResponseMock({'is-processed': 
+                'true Exception:common.exception.SalesforceGenericException'}
+        )
         res = self.w2l.create(params)
         self.failIf(res)
         
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

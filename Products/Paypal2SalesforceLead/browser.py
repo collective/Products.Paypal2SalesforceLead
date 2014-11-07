@@ -27,7 +27,8 @@ class Paypal2LeadView(Five.BrowserView):
 
         self.properties = getToolByName(self.context, 'portal_properties')
         self.props = self.properties.paypal2lead_properties
-        self.pp2sf = Paypal2SalesforceLead(self.props.use_paypal_sandbox)
+        self.pp2sf = Paypal2SalesforceLead(self.props.use_paypal_sandbox,
+                                           self.props.use_salesforce_sandbox)
     
     def __call__(self, **kw):
         """

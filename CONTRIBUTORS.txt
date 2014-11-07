@@ -1,0 +1,4 @@
+davisagli David Glick <david AT glicksoftware.com>
+andrewb Andrew Burkhalter <andrewb AT onenw.org>
+jessesnyder Jesse Snyder <jesses AT wesleyan.edu>
+bryanlandia Bryan Wilson <bryanlandia AT gmail.com>

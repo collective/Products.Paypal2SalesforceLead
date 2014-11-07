@@ -20,7 +20,7 @@ class TestPaypal2Lead(TestCase):
             'first_name': 'asdf',
             'last_name': 'asdf',
             'payer_email': 'test@example.com',
-            'payment_date': '12:00:00 Sep 27, 2007 PDT',
+            'payment_date': '12:00:00 07 Nov 2014 PDT',
             'mc_gross': '2.00',
         }
         

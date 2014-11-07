@@ -2,6 +2,7 @@
  <object name="paypal2lead_properties" meta_type="Plone Property Sheet">
   <property name="title">Paypal2SalesforceLead properties</property>
   <property name="use_paypal_sandbox" type="boolean">True</property>
+  <property name="use_salesforce_sandbox" type="boolean">False</property>
   <property name="valid_recipients" type="lines" />
   <property name="allow_query_string_override" type="boolean">False</property>
   <property name="salesforce_oid" type="string" />

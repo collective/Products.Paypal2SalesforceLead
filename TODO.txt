@@ -8,3 +8,4 @@ Short term
 Long term
 [ ] Use Salesforce API to check for duplicate transaction IDs.
 [ ] Support multiple currencies
+[ ] Switch to API instead of web2lead form.

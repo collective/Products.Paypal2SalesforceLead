@@ -14,13 +14,16 @@ class Paypal2SalesforceLead(object):
     """
     implements(IPaypal2SalesforceLead)
 
-    def __init__(self, use_sandbox = True):
+    def __init__(self, use_pp_sandbox=True, use_sf_sandbox=False):
         """
         """
-        self.paypal_ipn = PaypalIPN(use_sandbox)
-        self.web2lead = SalesforceWeb2Lead()
+        self.paypal_ipn = PaypalIPN(use_pp_sandbox)
+        self.web2lead = SalesforceWeb2Lead(use_sf_sandbox)
 
-    def create(self, paypal_params, oid, payment_date_field, payment_amount_field, lead_source = 'Paypal', transaction_id_field = None, item_name_field = None, campaign_id = None):
+    def create(self, paypal_params, oid, payment_date_field, 
+               payment_amount_field, lead_source='Paypal', 
+               transaction_id_field=None, item_name_field=None, 
+               campaign_id=None):
         """
         """
         if not self.paypal_ipn.verify(paypal_params):

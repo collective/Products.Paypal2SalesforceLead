@@ -4,6 +4,7 @@ PAYPAL_VERIFIER_SANDBOX = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
  
 # location of Salesforce web-to-lead service
 SALESFORCE_WEBTOLEAD = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8'
+SALESFORCE_SANDBOX_WEBTOLEAD = 'https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8'
 
 # enter this for the company if not provided
 SALESFORCE_DEFAULT_COMPANY = '[not provided]'

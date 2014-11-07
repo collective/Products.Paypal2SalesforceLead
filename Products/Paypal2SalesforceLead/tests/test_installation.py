@@ -18,7 +18,8 @@ class TestProductInstallation(PloneTestCase.PloneTestCase):
     def testPropertySheetMaintainsExpectedProperties(self):
         props = getattr(self.properties, 'paypal2lead_properties')
         
-        for prop in ('valid_recipients', 'use_paypal_sandbox'):
+        for prop in ('valid_recipients', 'use_paypal_sandbox', 
+                     'use_salesforce_sandbox'):
             self.failUnless(hasattr(props, prop),
                 "The Paypal2SalesforceLead property sheet is not maintaining the property %s" % prop)
 
