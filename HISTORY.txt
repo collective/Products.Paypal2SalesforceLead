@@ -2,6 +2,40 @@ Changelog for Paypal2SalesforceLead
 
     (name of developer listed in brackets)
 
+Paypal2SalesforceLead 1.3 [2014.11.17]
+
+    - Remove timezone identifier from PayPal payment date string
+    before converting to date for Salesforce.  Avoid problems from
+    OS-level differences in implementation of strptime.
+    [bryanlandia]
+
+Paypal2SalesforceLead 1.2.1 [2014.11.11]
+
+    - declare namespace for Products namespace package
+    [bryanlandia]
+
+Paypal2SalesforceLead 1.2 [2014.11.07]
+
+    - Create an additional property use_salesforce_sandbox and change
+    the URL for web2lead form if using sandbox.
+    Previous versions checked for specific HTML in response string
+    from SF web2lead form, which has since changed.  Validate based
+    on presence or not of 'is-processed' response header instead.
+    Intuitively, 'is-processed' will be sent if there is an error.
+    Product should really be updated to use a solid API insted of old
+    web2lead form.
+    Update tests accordingly.
+    PEP8 fixes.
+    Update TODO, CONTRIBUTORS
+    [bryanlandia]
+
+Paypal2SalesforceLead 1.1 [2014.11.07]
+
+    - Eggify the Product.
+    Fix paypal2lead's date conversion to match changed format sent by PayPal.
+    Bump version to 1.1
+    [bryanlandia]
+
 Paypal2SalesforceLead 1.0 beta 3 [2011.02.10]
 
     - In general aim to catch exceptions, log errors, and return a 200 status
