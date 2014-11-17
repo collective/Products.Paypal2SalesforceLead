@@ -52,7 +52,10 @@ class Paypal2SalesforceLead(object):
             if payment_date_field:
                 # date format sent by PayPal does not actualy match what is 
                 # specified here: https://developer.paypal.com/docs/classic/ipn/integration-guide/IPNandPDTVariables/
-                s_params[payment_date_field] = strftime('%m/%d/%Y', strptime(paypal_params['payment_date'], '%H:%M:%S %d %b %Y %Z'))
+                # also, we don't care about the time zone here and strptime 
+                # implementations differ in handling of TZ info, so we dump it
+                date_wo_tz = ' '.join(paypal_params['payment_date'].split(' ')[:-1])
+                s_params[payment_date_field] = strftime('%m/%d/%Y', strptime(date_wo_tz, '%H:%M:%S %d %b %Y'))
             
             if payment_amount_field:
                 s_params[payment_amount_field] = paypal_params['mc_gross']
