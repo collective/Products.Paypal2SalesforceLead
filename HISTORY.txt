@@ -2,6 +2,15 @@ Changelog for Paypal2SalesforceLead
 
     (name of developer listed in brackets)
 
+Paypal2SalesforceLead 1.4 [2014.11.24]
+
+    - Revert date format parsing string in paypal2lead.
+    Warning:  versions 1.1 through 1.3 are broken.  I tested against PayPal's
+    IPN Simulator which sends payment_date in a different format than an 
+    actual IPN, and thought PayPal's IPN date format had changed.  
+    Version 1.4 reverts the date format change
+    [bryanlandia]
+
 Paypal2SalesforceLead 1.3 [2014.11.17]
 
     - Remove timezone identifier from PayPal payment date string
