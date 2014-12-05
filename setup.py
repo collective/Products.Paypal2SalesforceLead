@@ -12,6 +12,7 @@ setup(name = "Products.Paypal2SalesforceLead",
     url = "http://www.glicksoftware.com",
     install_requires=[
         'setuptools',
+        'python-dateutil==1.5'
         # -*- Extra requirements: -*-
     ],
     namespace_packages=['Products', ],    

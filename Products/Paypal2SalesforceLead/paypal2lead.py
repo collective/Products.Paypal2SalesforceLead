@@ -4,7 +4,9 @@ from Products.Paypal2SalesforceLead.interfaces import IPaypal2SalesforceLead
 from Products.Paypal2SalesforceLead.paypal_ipn import PaypalIPN
 from Products.Paypal2SalesforceLead.salesforce_web2lead import SalesforceWeb2Lead
 
-from time import strftime, strptime
+from time import strftime
+from dateutil import parser
+
 
 class InvalidPaymentException(Exception):
     pass
@@ -50,9 +52,14 @@ class Paypal2SalesforceLead(object):
                 s_params[item_name_field] = paypal_params['item_name']
 
             if payment_date_field:
-                # note that the date format sent is different for the IPN Simulator
-                # and will not work here
-                s_params[payment_date_field] = strftime('%m/%d/%Y', strptime(paypal_params['payment_date'], '%H:%M:%S %b %d, %Y %Z'))
+                # ignore timezones. It's up to the user to make sure that 
+                # PayPal is set to use the same time zone for IPNs on the 
+                # account as is set for the Salesforce org.
+                # use datetutil for better parsing than strptime
+                # e.g., PayPal's IPN simulator reverses order of month and day
+                # in payment date compared to payment date in actual IPN.
+                paydt = parser.parse(paypal_params['payment_date'])
+                s_params[payment_date_field] = paydt.strftime('%m/%d/%Y')
             
             if payment_amount_field:
                 s_params[payment_amount_field] = paypal_params['mc_gross']
